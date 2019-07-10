@@ -4,14 +4,14 @@
 #define PUZZLE_HEIGHT 5
 
 //mainÇ≈égÇ§ä÷êî
-void init(char** puzzle);
-void puzzleMove(char** puzzle);
-void puzzleDelete(char** puzzle);
+void init(int** puzzle);
+void getKey(int* key);
 void puzzleDrop(char** puzzle);
 bool puzzleDropCombo(char** puzzle);
 void attackPlayer(int combo);
+void cursorMode(int* x_cursor, int* y_cursor, char key);
+void puzzleMode(int** puzzle, int* x_cursor, int* y_cursor, char key);
+int  deleteMode(int** puzzle);
 
-
-
-void cursorMode(char** puzzle);
-void puzzleMode(char** puzzle);
+void puzzleDelete(int** puzzle, int puzzle_type, int x, int y);
+int  connectPuzzleCount(int** puzzle, int** checked_puzzle, int puzzle_type, int x, int y, int count);
