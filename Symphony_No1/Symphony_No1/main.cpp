@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <curses.h>
 #include <iostream>
+#include <Windows.h>
 #include "puzzle.h"
 using namespace std;
 
@@ -16,7 +17,6 @@ struct player
 };
 
 
-
 int main() {
 
 
@@ -29,6 +29,8 @@ int main() {
 	{
 		player1.puzzle[i] = (int*)malloc(sizeof(int) * PUZZLE_WIDTH);
 	}
+
+	
 	
 	init(player1.puzzle);
 
@@ -78,8 +80,41 @@ int main() {
 		cout << endl;
 	}
 
+	cout << endl;
+
+	player1.puzzle[2][1] = 0;
+	player1.puzzle[3][0] = 0;
+	player1.puzzle[4][4] = 0;
+	player1.puzzle[2][4] = 0;
 
 
+	for (int y = 0; y < PUZZLE_HEIGHT; y++)
+	{
+		for (int x = 0; x < PUZZLE_WIDTH; x++)
+		{
+
+			fprintf_s(stdout, "%d,", player1.puzzle[y][x]);
+
+		}
+		cout << endl;
+	}
+
+	puzzleDrop(player1.puzzle);
+
+	cout << endl;
+
+
+
+	for (int y = 0; y < PUZZLE_HEIGHT; y++)
+	{
+		for (int x = 0; x < PUZZLE_WIDTH; x++)
+		{
+
+			fprintf_s(stdout, "%d,", player1.puzzle[y][x]);
+
+		}
+		cout << endl;
+	}
 
 
 

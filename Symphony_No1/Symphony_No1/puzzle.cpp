@@ -109,9 +109,18 @@ void puzzleMode(int** puzzle, int* x_cursor, int* y_cursor, char key)
 }
 
 int deleteMode(int** puzzle)
-{
+{ 
 	int** checked_puzzle;
+
 	
+	checked_puzzle = (int**)malloc(sizeof(int*) * PUZZLE_HEIGHT);
+
+	for (int i = 0; i < PUZZLE_HEIGHT; i++)
+	{
+
+		*checked_puzzle=(int*) malloc(sizeof(int) * PUZZLE_WIDTH);
+		checked_puzzle += i;
+	}
 
 	int clearCount = 0;
 
@@ -124,17 +133,24 @@ int deleteMode(int** puzzle)
 			}
 		}
 	}
+
+	return clearCount;
 }
 
 int connectPuzzleCount(int** puzzle, int** checked_puzzle,int puzzle_type, int x, int y, int count)
 {
+	if (y < 0 || x < 0 || y > 4 || x > 4)
+	{
+		return count;
+	}
+
 	if (puzzle[y][x] != puzzle_type || puzzle[y][x] == 0 || checked_puzzle[y][x] == 1)
 	{
 		return count;
 	}
 
 	count++;
-	checked_puzzle[y][x] = 0;
+	checked_puzzle[y][x] = 1;
 
 	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x, y - 1, count);
 	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x - 1, y, count);
@@ -146,6 +162,10 @@ int connectPuzzleCount(int** puzzle, int** checked_puzzle,int puzzle_type, int x
 //パズルを消す
 void puzzleDelete(int** puzzle,int puzzle_type,int x,int y) 
 {
+
+	if (y < 0 || x < 0 || y > 4 || x > 4) {
+		return;
+	}
 
 	if (puzzle[y][x] != puzzle_type || puzzle[y][x] == 0)
 	{
@@ -162,15 +182,88 @@ void puzzleDelete(int** puzzle,int puzzle_type,int x,int y)
 }
 
 //消えたパズルの分だけパズルを落とす
-void puzzleDrop(char** puzzle)
+void puzzleDrop(int** puzzle)
 {
+	//
+	for (int x = 0; x < PUZZLE_WIDTH; x++) 
+	{
+		for (int k = 4; k >= 1; k--)
+		{
+			int temp = k;
+			if (puzzle[k][x] != 0)
+			{
+				continue;
+			}
 
+			for (int y = k - 1; y >= 0; y--)
+			{
+
+				if (puzzle[y][x] == 0)
+				{
+					continue;
+				}
+
+				puzzle[temp][x] = puzzle[y][x];
+				puzzle[y][x] = 0;
+				temp = y;
+
+			}
+
+		}
+	}
+
+	//
+	int seed = (unsigned)time(NULL);
+	for (int y = 0; y < PUZZLE_HEIGHT; y++)
+	{
+		for (int x = 0; x < PUZZLE_WIDTH; x++)
+		{
+
+			if (puzzle[y][x] == 0)
+			{
+				//乱数生成
+				srand(seed++);
+				int random = rand() % 5 + 1;
+
+				puzzle[y][x] = random;
+			}
+
+		}
+	}
+
+	fprintf_s(stdout, "finish\n");
 }
 
 //落ち込んがあるか判定
-bool puzzleDropCombo(char** puzzle) 
+bool puzzleDropCombo(int** puzzle) 
 {
-	return true;
+
+	int** checked_puzzle;
+
+
+	checked_puzzle = (int**)malloc(sizeof(int*) * PUZZLE_HEIGHT);
+
+	for (int i = 0; i < PUZZLE_HEIGHT; i++)
+	{
+
+		*checked_puzzle = (int*)malloc(sizeof(int) * PUZZLE_WIDTH);
+		checked_puzzle += i;
+
+	}
+
+	for (int y = 0; y < PUZZLE_HEIGHT; y++) 
+	{
+		for (int x = 0; x < PUZZLE_WIDTH; x++) 
+		{
+			int count = connectPuzzleCount(puzzle, checked_puzzle, puzzle[y][x], x, y, 0);
+			if (count >= 3)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void attackPlayer(int combo)

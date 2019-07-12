@@ -3,11 +3,14 @@
 #define PUZZLE_WIDTH 5
 #define PUZZLE_HEIGHT 5
 
+
+
+
 //mainÇ≈égÇ§ä÷êî
 void init(int** puzzle);
 void getKey(int* key);
-void puzzleDrop(char** puzzle);
-bool puzzleDropCombo(char** puzzle);
+void puzzleDrop(int** puzzle);
+bool puzzleDropCombo(int** puzzle);
 void attackPlayer(int combo);
 void cursorMode(int* x_cursor, int* y_cursor, char key);
 void puzzleMode(int** puzzle, int* x_cursor, int* y_cursor, char key);
