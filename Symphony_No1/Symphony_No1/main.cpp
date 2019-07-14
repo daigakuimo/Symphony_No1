@@ -54,38 +54,50 @@ int main() {
 
 	fprintf_s(stdout, "%d,", *(player1.y_cursor));
 
-
 	cout << endl;
+	
+	int i = 1;
 
-	cin >> player1.key;
+	while (i == 1) {
 
-	cursorMode(player1.x_cursor, player1.y_cursor, player1.key);
+		cin >> player1.key;
 
-	fprintf_s(stdout, "%d,", *(player1.y_cursor));
-
-	cout << endl;
-
-	cin >> player1.key;
-
-	puzzleMode(player1.puzzle, player1.x_cursor, player1.y_cursor, player1.key);
-
-	for (int y = 0; y < PUZZLE_HEIGHT; y++)
-	{
-		for (int x = 0; x < PUZZLE_WIDTH; x++)
-		{
-
-			fprintf_s(stdout, "%d,", player1.puzzle[y][x]);
-
+		if (player1.key == 'x') {
+			break;
 		}
+
+		cursorMode(player1.x_cursor, player1.y_cursor, player1.key);
+
+		fprintf_s(stdout, "%d,", *(player1.y_cursor));
+
 		cout << endl;
 	}
 
-	cout << endl;
+	while (i == 1) {
+		cin >> player1.key;
 
-	player1.puzzle[2][1] = 0;
-	player1.puzzle[3][0] = 0;
-	player1.puzzle[4][4] = 0;
-	player1.puzzle[2][4] = 0;
+		if (player1.key == 'x') {
+			break;
+		}
+
+		puzzleMode(player1.puzzle, player1.x_cursor, player1.y_cursor, player1.key);
+
+		for (int y = 0; y < PUZZLE_HEIGHT; y++)
+		{
+			for (int x = 0; x < PUZZLE_WIDTH; x++)
+			{
+
+				fprintf_s(stdout, "%d,", player1.puzzle[y][x]);
+
+			}
+			cout << endl;
+		}
+
+		cout << endl;
+	}
+
+
+	delete(player1.puzzle);
 
 
 	for (int y = 0; y < PUZZLE_HEIGHT; y++)
