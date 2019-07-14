@@ -8,6 +8,9 @@
 using namespace std;
 
 
+
+
+
 //パズルの初期化
 void init(int** puzzle) 
 {
@@ -111,17 +114,29 @@ void puzzleMode(int** puzzle, int* x_cursor, int* y_cursor, char key)
 
 int deleteMode(int** puzzle)
 {
-	int* checked_puzzle[PUZZLE_WIDTH];
+	int **checked_puzzle = (int**)malloc(sizeof(int*) * PUZZLE_HEIGHT);
 
-	*checked_puzzle = (int*)malloc(sizeof(int) * PUZZLE_HEIGHT);
+
+
+	checked_puzzle[0] = (int*)malloc(sizeof(int) * PUZZLE_WIDTH * PUZZLE_HEIGHT);
+
+	
+	for (int i = 0; i < PUZZLE_WIDTH; i++)
+	{
+		checked_puzzle[i] = checked_puzzle[0] + i * PUZZLE_WIDTH;
+	}
+		
+
+
+
 
 
 	int clearCount = 0;
 
 	for (int y = 0; y < PUZZLE_HEIGHT; y++) {
 		for (int x = 0; x < PUZZLE_WIDTH; x++) {
+
 			int count = connectPuzzleCount(puzzle, checked_puzzle, puzzle[y][x], x, y, 0);
-			fprintf_s(stdout, "%d\n", count);
 			if (count >= 3) {
 				puzzleDelete(puzzle, puzzle[y][x], x, y);
 				clearCount = clearCount + count;

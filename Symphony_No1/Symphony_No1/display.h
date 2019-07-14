@@ -7,6 +7,7 @@ struct player
 	int** puzzle;
 	int* x_cursor;
 	int* y_cursor;
+	char key;
 };
 
 int setSquareX(int playerSide, int x);

@@ -3,18 +3,9 @@
 #include <iostream>
 #include <Windows.h>
 #include "puzzle.h"
+#include "display.h"
 using namespace std;
 
-
-struct player
-{
-	int player_number;
-	int hitpoint;
-	int** puzzle;
-	int* x_cursor;
-	int* y_cursor;
-	char key;
-};
 
 
 int main() {
@@ -97,7 +88,7 @@ int main() {
 	}
 
 
-	delete(player1.puzzle);
+	deleteMode(player1.puzzle);
 
 
 	for (int y = 0; y < PUZZLE_HEIGHT; y++)
