@@ -6,7 +6,7 @@
 
 
 //mainで使う関数
-void init(int** puzzle);       //パズルの初期化
+void init(int** puzzle, int i);       //パズルの初期化
 void getKey(int* key);         //キー入力の取得
 void puzzleDrop(int** puzzle);    //消えた分のパズルを上から落とす
 bool puzzleDropCombo(int** puzzle);   //落ち込んがあるか判定

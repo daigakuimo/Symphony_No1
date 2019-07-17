@@ -12,19 +12,21 @@ using namespace std;
 
 
 //パズルの初期化
-void init(int** puzzle) 
+void init(int** puzzle,int i) 
 {
 	//乱数からパズルを作る
 	//randomの値で記号を決める
 	//１：a　２：b　３：c　４：d　５：e
 	int seed = (unsigned)time(NULL);
+
 	for (int y = 0; y < PUZZLE_HEIGHT; y++) 
 	{
 		for (int x = 0; x < PUZZLE_WIDTH; x++) 
 		{
 	
 			//乱数生成
-			srand(seed++);
+			seed += i;
+			srand(seed);
 			int random = rand() % 5 + 1;
 
 			puzzle[y][x] = random;
@@ -125,10 +127,16 @@ int deleteMode(int** puzzle)
 	{
 		checked_puzzle[i] = checked_puzzle[0] + i * PUZZLE_WIDTH;
 	}
-		
 
+	for (int i = 0; i < PUZZLE_HEIGHT; i++)
+	{
+		for (int t = 0; t < PUZZLE_WIDTH; t++)
+		{
 
+			checked_puzzle[i][t] = 0;
 
+		}
+	}
 
 
 	int clearCount = 0;
@@ -137,6 +145,7 @@ int deleteMode(int** puzzle)
 		for (int x = 0; x < PUZZLE_WIDTH; x++) {
 
 			int count = connectPuzzleCount(puzzle, checked_puzzle, puzzle[y][x], x, y, 0);
+
 			if (count >= 3) {
 				puzzleDelete(puzzle, puzzle[y][x], x, y);
 				clearCount = clearCount + count;
@@ -162,10 +171,14 @@ int connectPuzzleCount(int** puzzle, int** checked_puzzle,int puzzle_type, int x
 	count++;
 	checked_puzzle[y][x] = 1;
 
-	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x, y - 1, count);
-	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x - 1, y, count);
-	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x, y + 1, count);
-	connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x + 1, y, count);
+	count = connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x, y - 1, count);
+	count = connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x - 1, y, count);
+	count = connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x, y + 1, count);
+	count = connectPuzzleCount(puzzle, checked_puzzle, puzzle_type, x + 1, y, count);
+
+	return count;
+
+
 
 }
 
@@ -241,15 +254,33 @@ void puzzleDrop(int** puzzle)
 		}
 	}
 
-	fprintf_s(stdout, "finish\n");
 }
 
 //落ち込んがあるか判定
 bool puzzleDropCombo(int** puzzle) 
 {
 
-	int *checked_puzzle[PUZZLE_WIDTH];
-	*checked_puzzle = (int*)malloc(sizeof(int) * PUZZLE_HEIGHT);
+	int** checked_puzzle = (int**)malloc(sizeof(int*) * PUZZLE_HEIGHT);
+
+
+
+	checked_puzzle[0] = (int*)malloc(sizeof(int) * PUZZLE_WIDTH * PUZZLE_HEIGHT);
+
+
+	for (int i = 0; i < PUZZLE_WIDTH; i++)
+	{
+		checked_puzzle[i] = checked_puzzle[0] + i * PUZZLE_WIDTH;
+	}
+
+	for (int i = 0; i < PUZZLE_HEIGHT; i++)
+	{
+		for (int t = 0; t < PUZZLE_WIDTH; t++)
+		{
+
+			checked_puzzle[i][t] = 0;
+
+		}
+	}
 
 
 	for (int y = 0; y < PUZZLE_HEIGHT; y++) 
