@@ -74,8 +74,8 @@ int main()
 	*(player2.y_cursor) = 0;
 	*(player2.x_cursor) = 0;
 
-	player1.hitpoint = 10;
-	player2.hitpoint = 50;
+	player1.hitpoint = 100;
+	player2.hitpoint = 100;
 
 	//•\Ž¦
 	displayAll(player1, player2);
