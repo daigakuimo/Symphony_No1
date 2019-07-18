@@ -50,10 +50,9 @@ int main()
 		player2.puzzle[i] = (int*)malloc(sizeof(int) * PUZZLE_WIDTH);
 	}
 
+	//パズル生成
 	init(player1.puzzle, 1);
-
 	Sleep(2000);
-
 	init(player2.puzzle, 2);
 
 	player1.x_cursor = new int;
@@ -65,9 +64,6 @@ int main()
 
 	player1.playerName = initName(1);
 	player2.playerName = initName(2);
-
-	fprintf_s(stdout, "%s\n", player1.playerName);
-	fprintf_s(stdout, "%s\n", player2.playerName);
 
 	*(player1.y_cursor) = 0;
 	*(player1.x_cursor) = 0;
@@ -81,10 +77,13 @@ int main()
 	displayAll(player1, player2);
 
 	//ゲームスタート
+	//プレイヤー１と２のターン制
+	//パズルを動かす時間は無制限
 	while (player1.hitpoint > 0 && player2.hitpoint > 0) {
 
 		pn = 1;
 
+		//カーソルモード　動かしたいパズルを決める
 		while (pn == 1)
 		{
 
@@ -96,7 +95,6 @@ int main()
 				break;
 			}
 
-			//カーソルモード
 			cursorMode(player1.x_cursor, player1.y_cursor, player1.key);
 
 			//表示
@@ -107,6 +105,7 @@ int main()
 
 		}
 
+		//パズルモード　パズルを動かす
 		while (pn == 1)
 		{
 			cin >> player1.key;
@@ -125,8 +124,9 @@ int main()
 
 		}
 
-		keypad(stdscr, TRUE);
 
+
+		//パズルが消せなくなるまで消してパズル落としてを繰り返す
 		while (puzzleDropCombo(player1.puzzle))
 		{
 			attack = 0;
@@ -134,18 +134,25 @@ int main()
 			attack = deleteMode(player1.puzzle);
 			player2.hitpoint -= attack;
 
+			Sleep(500);
+
 			displayAll(player1, player2);
 
 			puzzleDrop(player1.puzzle);
+
+			Sleep(500);
 
 			displayAll(player1, player2);
 
 		}
 
+		//プレイヤー２の体力が0になれば終了
 		if (player2.hitpoint <= 0) break;
 
 
 		pn = 2;
+
+		//カーソルモード
 		while (pn == 2)
 		{
 
@@ -157,7 +164,6 @@ int main()
 				break;
 			}
 
-			//カーソルモード
 			cursorMode(player2.x_cursor, player2.y_cursor, player2.key);
 
 			//表示
@@ -166,6 +172,7 @@ int main()
 
 		}
 
+		//パズルモード
 		while (pn == 2)
 		{
 			cin >> player2.key;
@@ -225,6 +232,7 @@ int main()
 	return 0;
 }
 
+//initファイルからプレイヤー名取得
 char* initName(int number)
 {
 	char currentDirectory[BUFFSIZE];
