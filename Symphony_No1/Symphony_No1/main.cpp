@@ -19,7 +19,7 @@ struct player
 	char key;
 };
 
-
+//display系関数　神崎
 char* initName(int number);
 int setSquareX(int playerSide, int x);
 int setSquareY(int playerSide, int y);
@@ -31,6 +31,7 @@ void displayAll(struct player player1, struct player player2);
 
 #define BUFFSIZE 1024
 
+//メイン関数　板原
 int main()
 {
 	//初期化
@@ -339,8 +340,8 @@ void displayDrop(int dropNum, int y, int x) {
 		attrset(COLOR_PAIR(5) | A_REVERSE | A_BOLD);
 		break;
 	default:
-		drop = "FFFF";
-		attrset(COLOR_PAIR(6) | A_REVERSE | A_BOLD);
+		drop = "    ";
+		attrset(COLOR_PAIR(7) | A_REVERSE | A_BOLD);
 		break;
 	}
 	mvaddstr(y, x, drop);
@@ -422,6 +423,8 @@ void displayAll(player player1, player player2) {
 	init_pair(4, COLOR_GREEN, COLOR_BLACK);	// 緑
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);	// 桃
 	init_pair(6, COLOR_WHITE, COLOR_BLACK);	// 白
+	init_pair(7, COLOR_BLACK, COLOR_WHITE);
+
 
 	erase();
 
